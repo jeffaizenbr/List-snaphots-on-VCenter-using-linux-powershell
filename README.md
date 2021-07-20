@@ -26,23 +26,50 @@ Install-Module -Name VMware.PowerCLI -Scope CurrentUser
 
 # Connecting do vcenter server
 
+Connect to powershell console
 ```bash
 pwsh 
 ```
-
+Ignore de SSL verification
 ```bash
-Connect-VIServer -Server vcenter01 -User admin -Password pass
+Set-PowerCLIConfiguration -InvalidCertificateAction:ignore -Scope:User
+```
+Connect to VCenter
+```bash
+Connect-VIServer -Server 10.34.53.10 -Protocol https -User XXXXXXXX -Password XXXXXXXXX
 ```
 
 # List Snapshots or export do TXT file on /tmp path
 
 
 ```bash
-get-vm -location “My lab” | get-snapshot | format-list
+Get-VM | Get-Snapshot | select VM, Name, Created | Export-Csv /tmp/snap.txt
 ```
-
-or
+# Automate steps 
 
 ```bash
-Get-Datacenter "YOURDATACENTERNAMEONVCENTER" |Get-VM |Get-Snapshot | Select vm, Name, Description, PowerState | Export-Csv /tmp/snapshot.txt
+vim /opt/microsoft/powershell/7/listasnap.ps1
 ```
+
+```bash
+#!/usr/bin/pwsh -Command
+
+Connect-VIServer -Server 10.34.53.10 -Protocol https -User XXXXXXXXXX -Password XXXXXXX
+
+Get-VM | Get-Snapshot | select VM, Created | Export-Csv /opt/microsoft/powershell/7/snapshots.txt
+```
+
+
+```bash
+chmod +x /opt/microsoft/powershell/7/listasnap.ps1
+```
+
+```bash
+vim /etc/crontab
+```
+```bash
+########Listar Snaphots no vcenter, e salvar no caminho /opt/microsoft/powershell/7/snapshots.txt######
+30 08 * * * root /opt/microsoft/powershell/7/listasnap.ps1
+```
+
+

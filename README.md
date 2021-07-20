@@ -39,7 +39,7 @@ Connect to VCenter
 Connect-VIServer -Server 10.34.53.10 -Protocol https -User XXXXXXXX -Password XXXXXXXXX
 ```
 
-# List Snapshots or export do TXT file on /tmp path
+# List Snapshots and export a TXT file on /tmp/snap.txt
 
 
 ```bash
@@ -47,10 +47,11 @@ Get-VM | Get-Snapshot | select VM, Name, Created | Export-Csv /tmp/snap.txt
 ```
 # Automate steps 
 
+Creating listasnap.ps1
 ```bash
 vim /opt/microsoft/powershell/7/listasnap.ps1
 ```
-
+Copy pwsh script
 ```bash
 #!/usr/bin/pwsh -Command
 
@@ -59,14 +60,15 @@ Connect-VIServer -Server 10.34.53.10 -Protocol https -User XXXXXXXXXX -Password 
 Get-VM | Get-Snapshot | select VM, Created | Export-Csv /opt/microsoft/powershell/7/snapshots.txt
 ```
 
-
+giving permission the execution
 ```bash
 chmod +x /opt/microsoft/powershell/7/listasnap.ps1
 ```
-
+put the task on crontab
 ```bash
 vim /etc/crontab
 ```
+copy on crontab file
 ```bash
 ########Listar Snaphots no vcenter, e salvar no caminho /opt/microsoft/powershell/7/snapshots.txt######
 30 08 * * * root /opt/microsoft/powershell/7/listasnap.ps1

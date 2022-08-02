@@ -19,7 +19,9 @@ sudo yum install -y powershell
 
 # Install PowerCLI module
 
-
+```bash
+pwsh 
+```
 ```bash
 Install-Module -Name VMware.PowerCLI -Scope CurrentUser
 ```

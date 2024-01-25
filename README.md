@@ -76,4 +76,10 @@ copy on crontab file
 30 08 * * * root /opt/microsoft/powershell/7/listasnap.ps1
 ```
 
+## Other commands to remember
+
+get Name, os version and IP
+```bash
+Get-VM | Select-Object Name, @{Name='IPAddress';Expression={(Get-VMGuest -VM $.Name).IPAddress -join ', '}}, @{Name='OSVersion';Expression={$.ExtensionData.Summary.Config.GuestFullName}} | Export-Csv /root/planilha.csv
+```
 

@@ -61,7 +61,25 @@ Connect-VIServer -Server 10.34.53.10 -Protocol https -User XXXXXXXXXX -Password 
 
 Get-VM | Get-Snapshot | select VM, Created | Export-Csv /opt/microsoft/powershell/7/snapshots.txt
 ```
+#Another option script  script.ps1
+```bash
+# Define variables
+$Server = "10.34.53.10"
+$User = "mon.zabbix@VSphere.local"
+$Password = "M0n1t4r4.AllIn"
+$OutputFile = "/root/snapshots.txt"
 
+# Connect to the vSphere server
+$SecurePassword = ConvertTo-SecureString $Password -AsPlainText -Force
+$Credential = New-Object System.Management.Automation.PSCredential ($User, $SecurePassword)
+Connect-VIServer -Server $Server -Credential $Credential
+
+# Get snapshots and export to CSV
+Get-VM | Get-Snapshot | Select-Object VM, Created | Export-Csv -Path $OutputFile -NoTypeInformation
+
+# Disconnect from the vSphere server
+Disconnect-VIServer -Confirm:$false
+```
 giving permission the execution
 ```bash
 chmod +x /opt/microsoft/powershell/7/listasnap.ps1

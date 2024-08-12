@@ -66,7 +66,7 @@ Get-VM | Get-Snapshot | select VM, Created | Export-Csv /opt/microsoft/powershel
 # Define variables
 $Server = "10.34.53.10"
 $User = "mon.zabbix@VSphere.local"
-$Password = "M0n1t4r4.AllIn"
+$Password = "XXXXXXXX"
 $OutputFile = "/root/snapshots.txt"
 
 # Connect to the vSphere server
